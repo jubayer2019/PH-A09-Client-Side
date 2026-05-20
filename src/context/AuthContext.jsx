@@ -70,7 +70,12 @@ export function AuthProvider({ children }) {
       throw new Error('Google sign-in can only start in the browser.');
     }
 
-    window.location.assign('/auth/google');
+    const baseURL = api.defaults.baseURL || process.env.NEXT_PUBLIC_API_URL;
+    if (!baseURL) {
+      throw new Error('API URL is missing. Set NEXT_PUBLIC_API_URL first.');
+    }
+
+    window.location.assign(`${baseURL.replace(/\/$/, '')}/api/auth/google`);
   }, []);
 
   const logout = useCallback(async () => {
