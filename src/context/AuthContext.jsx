@@ -19,6 +19,21 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const currentUrl = new URL(window.location.href);
+    const authToken = currentUrl.searchParams.get('token');
+
+    if (authToken) {
+      window.localStorage.setItem(AUTH_TOKEN_KEY, authToken);
+      currentUrl.searchParams.delete('token');
+      window.history.replaceState({}, '', currentUrl.toString());
+    }
+  }, []);
+
   const refetch = useCallback(async () => {
     setLoading(true);
     try {
