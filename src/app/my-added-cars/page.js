@@ -8,12 +8,17 @@ import MainLayout from '@/layouts/MainLayout';
 import ErrorState from '@/components/shared/ErrorState';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { deleteCar, fetchMyCars, updateCar } from '@/services/carService';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function MyAddedCarsPage() {
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [carToDelete, setCarToDelete] = useState(null);
+  const { theme } = useTheme();
+
+  const dialogClass = theme === 'light' ? 'border-slate-200 bg-white text-slate-900' : 'border-white/10 bg-slate-900 text-slate-100';
+  const mutedTextClass = theme === 'light' ? 'text-slate-700' : 'text-slate-300';
 
   const loadCars = useCallback(async () => {
     try {
@@ -85,16 +90,16 @@ export default function MyAddedCarsPage() {
         </div>
 
         {carToDelete && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
-            <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900 p-6">
-              <h3 className="text-xl font-semibold text-white">Delete Car Listing</h3>
-              <p className="mt-2 text-slate-300">
+          <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm ${theme === 'light' ? 'bg-slate-900/35' : 'bg-slate-950/70'}`}>
+            <div className={`w-full max-w-md rounded-2xl border p-6 ${dialogClass}`}>
+              <h3 className={`text-xl font-semibold ${theme === 'light' ? 'text-slate-950' : 'text-white'}`}>Delete Car Listing</h3>
+              <p className={`mt-2 ${mutedTextClass}`}>
                 Are you sure you want to remove {carToDelete.carName} from your fleet?
               </p>
               <div className="mt-6 flex justify-end gap-3">
                 <button
                   onClick={() => setCarToDelete(null)}
-                  className="rounded-xl border border-white/20 px-4 py-2 text-slate-200"
+                  className={`rounded-xl border px-4 py-2 ${theme === 'light' ? 'border-slate-300 text-slate-700 hover:bg-slate-100' : 'border-white/20 text-slate-200 hover:bg-white/10'}`}
                 >
                   Cancel
                 </button>
