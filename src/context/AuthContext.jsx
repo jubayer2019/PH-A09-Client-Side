@@ -66,7 +66,16 @@ export function AuthProvider({ children }) {
   }, [refetch]);
 
   const loginWithGoogle = useCallback(async () => {
-    throw new Error('Google sign-in is not wired to the server auth flow yet.');
+    const baseURL = api.defaults.baseURL || process.env.NEXT_PUBLIC_API_URL;
+    if (!baseURL) {
+      throw new Error('API URL is missing. Set NEXT_PUBLIC_API_URL first.');
+    }
+
+    if (typeof window === 'undefined') {
+      throw new Error('Google sign-in can only start in the browser.');
+    }
+
+    window.location.assign(`${baseURL.replace(/\/$/, '')}/api/auth/google`);
   }, []);
 
   const logout = useCallback(async () => {
