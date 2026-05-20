@@ -10,10 +10,12 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import MainLayout from '@/layouts/MainLayout';
 import { fetchCarById } from '@/services/carService';
 import useAuth from '@/hooks/useAuth';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function CarDetailsPage() {
   const { id } = useParams();
   const { isAuthenticated } = useAuth();
+  const { theme } = useTheme();
   const [car, setCar] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -37,6 +39,10 @@ export default function CarDetailsPage() {
 
   if (loading) return <MainLayout><LoadingSpinner /></MainLayout>;
   if (error) return <MainLayout><ErrorState title="Details unavailable" message={error} /></MainLayout>;
+
+  const cardClass = theme === 'light' ? 'border-slate-200 bg-white/85 text-slate-900' : 'border-white/10 bg-white/5 text-slate-100';
+  const statClass = theme === 'light' ? 'bg-slate-100 text-slate-900' : 'bg-slate-900 text-slate-200';
+  const mutedTextClass = theme === 'light' ? 'text-slate-700' : 'text-slate-300';
 
   return (
     <MainLayout>
@@ -65,22 +71,22 @@ export default function CarDetailsPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h1 className="text-4xl font-black text-white">{car.carName}</h1>
-          <p className="mt-3 text-slate-300">{car.description}</p>
+        <div className={`rounded-2xl border p-6 ${cardClass}`}>
+          <h1 className={`text-4xl font-black ${theme === 'light' ? 'text-slate-950' : 'text-white'}`}>{car.carName}</h1>
+          <p className={`mt-3 ${mutedTextClass}`}>{car.description}</p>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <p className="rounded-xl bg-slate-900 p-3 text-slate-200">Type: {car.carType}</p>
-            <p className="rounded-xl bg-slate-900 p-3 text-slate-200">Seats: {car.seatCapacity}</p>
-            <p className="rounded-xl bg-slate-900 p-3 text-slate-200">Location: {car.pickupLocation}</p>
-            <p className="rounded-xl bg-slate-900 p-3 text-slate-200">Bookings: {car.bookingCount}</p>
-            <p className="rounded-xl bg-slate-900 p-3 text-slate-200">Owner: {car.ownerEmail}</p>
-            <p className={`rounded-xl p-3 ${car.availability ? 'bg-emerald-900/40 text-emerald-200' : 'bg-rose-900/40 text-rose-200'}`}>
+            <p className={`rounded-xl p-3 ${statClass}`}>Type: {car.carType}</p>
+            <p className={`rounded-xl p-3 ${statClass}`}>Seats: {car.seatCapacity}</p>
+            <p className={`rounded-xl p-3 ${statClass}`}>Location: {car.pickupLocation}</p>
+            <p className={`rounded-xl p-3 ${statClass}`}>Bookings: {car.bookingCount}</p>
+            <p className={`rounded-xl p-3 ${statClass}`}>Owner: {car.ownerEmail}</p>
+            <p className={`rounded-xl p-3 ${car.availability ? (theme === 'light' ? 'bg-emerald-100 text-emerald-800' : 'bg-emerald-900/40 text-emerald-200') : (theme === 'light' ? 'bg-rose-100 text-rose-800' : 'bg-rose-900/40 text-rose-200')}`}>
               {car.availability ? 'Available' : 'Unavailable'}
             </p>
           </div>
 
-          <p className="mt-6 text-3xl font-bold text-cyan-200">${car.dailyRentPrice}/day</p>
+          <p className={`mt-6 text-3xl font-bold ${theme === 'light' ? 'text-cyan-700' : 'text-cyan-200'}`}>${car.dailyRentPrice}/day</p>
 
           <button
             onClick={() => {

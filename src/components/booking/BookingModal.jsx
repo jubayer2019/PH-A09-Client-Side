@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { createBooking } from '@/services/bookingService';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function BookingModal({ car, onClose, onBooked }) {
   const [driverNeeded, setDriverNeeded] = useState(false);
   const [specialNote, setSpecialNote] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const { theme } = useTheme();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,13 +33,13 @@ export default function BookingModal({ car, onClose, onBooked }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-md">
-      <form onSubmit={handleSubmit} className="w-full max-w-xl rounded-2xl border border-white/10 bg-slate-900 p-6">
-        <h3 className="text-2xl font-semibold text-white">Book {car.carName}</h3>
-        <p className="mt-2 text-sm text-slate-300">Base rent: ${car.dailyRentPrice}/day. Private chauffeur adds $45.</p>
+    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md ${theme === 'light' ? 'bg-slate-900/35' : 'bg-slate-950/70'}`}>
+      <form onSubmit={handleSubmit} className={`w-full max-w-xl rounded-2xl border p-6 ${theme === 'light' ? 'border-slate-200 bg-white text-slate-900' : 'border-white/10 bg-slate-900 text-slate-100'}`}>
+        <h3 className={`text-2xl font-semibold ${theme === 'light' ? 'text-slate-950' : 'text-white'}`}>Book {car.carName}</h3>
+        <p className={`mt-2 text-sm ${theme === 'light' ? 'text-slate-700' : 'text-slate-300'}`}>Base rent: ${car.dailyRentPrice}/day. Private chauffeur adds $45.</p>
 
         <div className="mt-4 space-y-4">
-          <label className="flex items-center gap-2 text-slate-200">
+          <label className={`flex items-center gap-2 ${theme === 'light' ? 'text-slate-800' : 'text-slate-200'}`}>
             <input
               type="checkbox"
               checked={driverNeeded}
@@ -50,7 +52,7 @@ export default function BookingModal({ car, onClose, onBooked }) {
             value={specialNote}
             onChange={(event) => setSpecialNote(event.target.value)}
             placeholder="Any pickup preferences or extra request?"
-            className="h-28 w-full rounded-xl border border-white/15 bg-slate-950 p-3 text-slate-100 outline-none"
+            className={`h-28 w-full rounded-xl border p-3 outline-none ${theme === 'light' ? 'border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-500' : 'border-white/15 bg-slate-950 text-slate-100 placeholder:text-slate-400'}`}
           />
         </div>
 
@@ -58,7 +60,7 @@ export default function BookingModal({ car, onClose, onBooked }) {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl border border-white/20 px-4 py-2 text-slate-200"
+            className={`rounded-xl border px-4 py-2 ${theme === 'light' ? 'border-slate-300 text-slate-700 hover:bg-slate-100' : 'border-white/20 text-slate-200'}`}
           >
             Cancel
           </button>
