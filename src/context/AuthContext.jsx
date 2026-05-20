@@ -4,37 +4,48 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
+  useState,
 } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { authClient } from '@/lib/auth-client';
+import api from '@/services/api';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const router = useRouter();
-  const { data: session, isPending, refetch } = authClient.useSession();
-  const user = session?.user ?? null;
-  const loading = isPending;
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const refetch = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await api.get('/api/auth/me');
+      setUser(response.data?.data ?? null);
+      return response.data;
+    } catch (error) {
+      setUser(null);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refetch();
+  }, [refetch]);
 
   const register = useCallback(async ({ name, email, photo, password }) => {
     try {
-      const { error } = await authClient.signUp.email({ name, email, password });
-      if (error) {
-        throw new Error(error.message || 'Registration failed');
-      }
-
-      if (photo) {
-        const { error: updateError } = await authClient.updateUser({ image: photo });
-        if (updateError) {
-          throw new Error(updateError.message || 'Registration failed');
-        }
-      }
-
+      const response = await api.post('/api/auth/register', { name, email, password, photo });
+      setUser(response.data?.data ?? null);
       await refetch();
       toast.success('Welcome to DriveFleet. Registration complete.');
       return true;
+    } catch (error) {
+      throw new Error(error?.response?.data?.message || error?.message || 'Registration failed');
     } finally {
       await refetch();
     }
@@ -42,38 +53,25 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(async ({ email, password }) => {
     try {
-      const { error } = await authClient.signIn.email({ email, password });
-      if (error) {
-        throw new Error(error.message || 'Login failed');
-      }
-
+      const response = await api.post('/api/auth/login', { email, password });
+      setUser(response.data?.data ?? null);
       await refetch();
       toast.success('Login successful.');
       return true;
+    } catch (error) {
+      throw new Error(error?.response?.data?.message || error?.message || 'Login failed');
     } finally {
       await refetch();
     }
   }, [refetch]);
 
   const loginWithGoogle = useCallback(async () => {
-    const { error } = await authClient.signIn.social({
-      provider: 'google',
-      callbackURL: '/',
-    });
-    if (error) {
-      const details = [error.code, error.status, error.statusText, error.message]
-        .filter(Boolean)
-        .join(' | ');
-      throw new Error(details || 'Google sign-in failed');
-    }
+    throw new Error('Google sign-in is not wired to the server auth flow yet.');
   }, []);
 
   const logout = useCallback(async () => {
-    const { error } = await authClient.signOut();
-    if (error) {
-      throw new Error(error.message || 'Logout failed');
-    }
-
+    await api.post('/api/auth/logout');
+    setUser(null);
     await refetch();
     toast.success('You are now logged out.');
     router.replace('/login');
