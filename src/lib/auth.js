@@ -15,14 +15,6 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      redirectURI: new URL('/api/auth/callback/google', process.env.BETTER_AUTH_URL || 'http://localhost:3000').toString(),
-      prompt: 'select_account',
-    },
-  },
   onAPIError: {
     onError: (error, context) => {
       console.error('Better Auth API error:', {
