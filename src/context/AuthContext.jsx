@@ -10,7 +10,7 @@ import {
 } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import api from '@/services/api';
+import api, { AUTH_TOKEN_KEY } from '@/services/api';
 
 const AuthContext = createContext(null);
 
@@ -40,6 +40,9 @@ export function AuthProvider({ children }) {
   const register = useCallback(async ({ name, email, photo, password }) => {
     try {
       const response = await api.post('/api/auth/register', { name, email, password, photo });
+      if (response.data?.token && typeof window !== 'undefined') {
+        window.localStorage.setItem(AUTH_TOKEN_KEY, response.data.token);
+      }
       setUser(response.data?.data ?? null);
       toast.success('Welcome to DriveFleet. Registration complete.');
       return true;
@@ -53,6 +56,9 @@ export function AuthProvider({ children }) {
   const login = useCallback(async ({ email, password }) => {
     try {
       const response = await api.post('/api/auth/login', { email, password });
+      if (response.data?.token && typeof window !== 'undefined') {
+        window.localStorage.setItem(AUTH_TOKEN_KEY, response.data.token);
+      }
       setUser(response.data?.data ?? null);
       toast.success('Login successful.');
       return true;
@@ -78,6 +84,9 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(async () => {
     await api.post('/api/auth/logout');
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem(AUTH_TOKEN_KEY);
+    }
     setUser(null);
     await refetch();
     toast.success('You are now logged out.');
