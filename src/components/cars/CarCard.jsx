@@ -1,6 +1,6 @@
 'use client';
+/* eslint-disable @next/next/no-img-element */
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { HiMapPin, HiOutlineUsers } from 'react-icons/hi2';
@@ -15,12 +15,10 @@ export default function CarCard({ car }) {
       className="group overflow-hidden rounded-2xl border border-white/10 bg-white/5"
     >
       <div className="relative h-52 overflow-hidden">
-        <Image
+        <img
           src={car.image}
           alt={car.carName}
-          fill
-          unoptimized
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          loading="lazy"
           className="object-cover transition duration-500 group-hover:scale-110"
         />
       </div>

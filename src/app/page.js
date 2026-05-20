@@ -76,6 +76,11 @@ export default function HomePage() {
           {loading && Array.from({ length: 6 }).map((_, index) => <SkeletonCard key={index} />)}
           {!loading && cars.map((car) => <CarCard key={car._id} car={car} />)}
         </div>
+        {!loading && cars.length === 0 && (
+          <p className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5 text-slate-300">
+            No cars are available yet. Add a listing from the server side or confirm the client is connected to the correct API URL.
+          </p>
+        )}
       </section>
 
       <section className="mt-16 grid gap-6 md:grid-cols-3">
