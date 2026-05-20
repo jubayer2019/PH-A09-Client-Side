@@ -37,7 +37,7 @@ export default function HomePage() {
     const loadCars = async () => {
       try {
         const response = await fetchCars({ limit: 6 });
-        setCars(response.data);
+        setCars(response);
       } finally {
         setLoading(false);
       }

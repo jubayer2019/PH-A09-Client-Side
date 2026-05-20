@@ -42,7 +42,7 @@ export default function CarDetailsPage() {
     <MainLayout>
       <section className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-3">
-          <div className="relative h-[430px] overflow-hidden rounded-2xl">
+          <div className="relative h-107.5 overflow-hidden rounded-2xl">
             <Image
               src={car.image}
               alt={car.carName}
