@@ -5,24 +5,24 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('dark');
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('drivefleet-theme');
-    if (savedTheme === 'dark' || savedTheme === 'light') {
-      setTheme(savedTheme);
-      return;
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === 'undefined') {
+      return 'dark';
     }
 
+    const savedTheme = localStorage.getItem('drivefleet-theme');
+    return savedTheme === 'light' ? 'light' : 'dark';
+  });
+
+  useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.style.colorScheme = theme;
+    localStorage.setItem('drivefleet-theme', theme);
   }, [theme]);
 
   const toggleTheme = useCallback(() => {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-    localStorage.setItem('drivefleet-theme', nextTheme);
-    document.documentElement.setAttribute('data-theme', nextTheme);
-  }, [theme]);
+    setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
+  }, []);
 
   const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]);
 
