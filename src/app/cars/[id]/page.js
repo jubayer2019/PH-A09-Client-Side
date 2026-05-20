@@ -94,11 +94,16 @@ export default function CarDetailsPage() {
                 toast.error('Please login to book this car.');
                 return;
               }
+              if (!car.availability) {
+                toast.error('This car is not available for booking.');
+                return;
+              }
               setShowModal(true);
             }}
-            className="mt-6 w-full rounded-xl bg-cyan-400 px-4 py-3 font-semibold text-slate-900"
+            disabled={!car.availability}
+            className="mt-6 w-full rounded-xl bg-cyan-400 px-4 py-3 font-semibold text-slate-900 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Book Now
+            {car.availability ? 'Book Now' : 'Unavailable'}
           </button>
         </div>
       </section>

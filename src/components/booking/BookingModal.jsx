@@ -66,10 +66,11 @@ export default function BookingModal({ car, onClose, onBooked }) {
           </button>
           <button
             type="submit"
-            disabled={submitting}
+            disabled={submitting || !car.availability}
             className="rounded-xl bg-cyan-400 px-4 py-2 font-semibold text-slate-900 disabled:opacity-60"
+            title={!car.availability ? 'This car is not available' : ''}
           >
-            {submitting ? 'Booking...' : 'Confirm Booking'}
+            {submitting ? 'Booking...' : !car.availability ? 'Unavailable' : 'Confirm Booking'}
           </button>
         </div>
       </form>
