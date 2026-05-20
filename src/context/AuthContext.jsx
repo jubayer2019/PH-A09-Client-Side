@@ -75,7 +75,7 @@ export function AuthProvider({ children }) {
       throw new Error('API URL is missing. Set NEXT_PUBLIC_API_URL first.');
     }
 
-    window.location.assign(`${baseURL.replace(/\/$/, '')}/api/auth/google`);
+    window.location.assign(new URL('/api/auth/google', baseURL).toString());
   }, []);
 
   const logout = useCallback(async () => {
