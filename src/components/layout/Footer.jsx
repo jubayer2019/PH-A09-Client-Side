@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FaXTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa6';
+import { FaGithub, FaInstagram, FaLinkedinIn } from 'react-icons/fa6';
 
 export default function Footer() {
   return (
@@ -25,12 +25,18 @@ export default function Footer() {
 
         <div>
           <h5 className="text-lg font-semibold text-white">Contact</h5>
-          <p className="mt-3 text-slate-300">support@drivefleet.io</p>
-          <p className="text-slate-300">+1 (415) 555-0139</p>
+          <p className="mt-3 text-slate-300">jubayer.prodesigner@gmail.com</p>
+          <p className="text-slate-300">+880 1935-615672</p>
           <div className="mt-4 flex items-center gap-3 text-slate-300">
-            <FaXTwitter />
-            <FaInstagram />
-            <FaLinkedinIn />
+            <a href="https://www.instagram.com/jubayer.info360/" target="_blank" rel="noopener noreferrer">
+              <FaInstagram />
+            </a>
+            <a href="https://www.linkedin.com/in/pro-jubayer/" target="_blank" rel="noopener noreferrer">
+              <FaLinkedinIn />
+            </a>
+            <a href="https://github.com/jubayer2019" target="_blank" rel="noopener noreferrer">
+              <FaGithub />
+            </a>
           </div>
         </div>
       </div>
