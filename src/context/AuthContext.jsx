@@ -41,13 +41,12 @@ export function AuthProvider({ children }) {
     try {
       const response = await api.post('/api/auth/register', { name, email, password, photo });
       setUser(response.data?.data ?? null);
-      await refetch();
       toast.success('Welcome to DriveFleet. Registration complete.');
       return true;
     } catch (error) {
       throw new Error(error?.response?.data?.message || error?.message || 'Registration failed');
     } finally {
-      await refetch();
+      setLoading(false);
     }
   }, [refetch]);
 
@@ -55,13 +54,12 @@ export function AuthProvider({ children }) {
     try {
       const response = await api.post('/api/auth/login', { email, password });
       setUser(response.data?.data ?? null);
-      await refetch();
       toast.success('Login successful.');
       return true;
     } catch (error) {
       throw new Error(error?.response?.data?.message || error?.message || 'Login failed');
     } finally {
-      await refetch();
+      setLoading(false);
     }
   }, [refetch]);
 
