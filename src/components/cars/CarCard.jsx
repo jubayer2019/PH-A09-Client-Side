@@ -14,12 +14,12 @@ export default function CarCard({ car }) {
       transition={{ duration: 0.45 }}
       className="group overflow-hidden rounded-2xl border border-white/10 bg-white/5"
     >
-      <div className="relative h-52 overflow-hidden">
+      <div className="relative h-52 w-full overflow-hidden">
         <img
           src={car.image}
           alt={car.carName}
           loading="lazy"
-          className="object-cover transition duration-500 group-hover:scale-110"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
         />
       </div>
       <div className="space-y-3 p-5">
