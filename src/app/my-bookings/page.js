@@ -7,6 +7,7 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorState from '@/components/shared/ErrorState';
 import { fetchMyBookings } from '@/services/bookingService';
 import { BOOKING_STATUS_COLORS } from '@/utils/constants';
+import { formatBDTPrice } from '@/utils/formatCurrency';
 
 export default function MyBookingsPage() {
   const [bookings, setBookings] = useState([]);
@@ -55,7 +56,7 @@ export default function MyBookingsPage() {
                     <tr key={booking._id} className="border-t border-white/10">
                       <td className="p-4">{booking.carId?.carName || 'Car removed'}</td>
                       <td className="p-4">{new Date(booking.bookingDate).toLocaleDateString()}</td>
-                      <td className="p-4">${booking.totalPrice}</td>
+                      <td className="p-4">{formatBDTPrice(booking.totalPrice)}</td>
                       <td className="p-4">{booking.driverNeeded ? 'Yes' : 'No'}</td>
                       <td className="p-4">
                         <span className={`rounded-full px-3 py-1 text-xs ${BOOKING_STATUS_COLORS[booking.status]}`}>
@@ -73,7 +74,7 @@ export default function MyBookingsPage() {
                 <article key={booking._id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
                   <h3 className="text-lg font-semibold text-white">{booking.carId?.carName || 'Car removed'}</h3>
                   <p className="mt-2 text-slate-300">Date: {new Date(booking.bookingDate).toLocaleDateString()}</p>
-                  <p className="text-slate-300">Price: ${booking.totalPrice}</p>
+                  <p className="text-slate-300">Price: {formatBDTPrice(booking.totalPrice)}</p>
                   <p className="text-slate-300">Driver: {booking.driverNeeded ? 'Yes' : 'No'}</p>
                 </article>
               ))}

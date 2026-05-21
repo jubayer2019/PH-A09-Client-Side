@@ -9,6 +9,7 @@ import ErrorState from '@/components/shared/ErrorState';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { deleteCar, fetchMyCars, updateCar } from '@/services/carService';
 import { useTheme } from '@/context/ThemeContext';
+import { formatBDTPrice } from '@/utils/formatCurrency';
 
 export default function MyAddedCarsPage() {
   const [cars, setCars] = useState([]);
@@ -110,7 +111,7 @@ export default function MyAddedCarsPage() {
                 />
               </div>
               <h3 className="mt-4 text-xl font-semibold text-white">{car.carName}</h3>
-              <p className="text-slate-300">${car.dailyRentPrice}/day</p>
+              <p className="text-slate-300">{formatBDTPrice(car.dailyRentPrice)}/day</p>
               <p className="text-slate-300">{car.availability ? 'Available' : 'Unavailable'}</p>
               <div className="mt-4 flex gap-3">
                 <button onClick={() => openEditModal(car)} className="rounded-xl border border-white/20 px-4 py-2 text-slate-100">Update</button>

@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { HiMapPin, HiOutlineUsers } from 'react-icons/hi2';
+import { formatBDTPrice } from '@/utils/formatCurrency';
 
 export default function CarCard({ car }) {
   return (
@@ -34,7 +35,7 @@ export default function CarCard({ car }) {
           <HiMapPin /> {car.pickupLocation}
         </p>
         <div className="flex items-center justify-between">
-          <p className="text-2xl font-bold text-cyan-200">${car.dailyRentPrice}/day</p>
+          <p className="text-2xl font-bold text-cyan-200">{formatBDTPrice(car.dailyRentPrice)}/day</p>
           <span className="text-sm text-slate-300">Booked {car.bookingCount} times</span>
         </div>
         <p className={`text-sm ${car.availability ? 'text-emerald-300' : 'text-rose-300'}`}>

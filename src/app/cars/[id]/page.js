@@ -11,6 +11,7 @@ import MainLayout from '@/layouts/MainLayout';
 import { fetchCarById } from '@/services/carService';
 import useAuth from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
+import { formatBDTPrice } from '@/utils/formatCurrency';
 
 export default function CarDetailsPage() {
   const { id } = useParams();
@@ -86,7 +87,9 @@ export default function CarDetailsPage() {
             </p>
           </div>
 
-          <p className={`mt-6 text-3xl font-bold ${theme === 'light' ? 'text-cyan-700' : 'text-cyan-200'}`}>${car.dailyRentPrice}/day</p>
+          <p className={`mt-6 text-3xl font-bold ${theme === 'light' ? 'text-cyan-700' : 'text-cyan-200'}`}>
+            {formatBDTPrice(car.dailyRentPrice)}/day
+          </p>
 
           <button
             onClick={() => {

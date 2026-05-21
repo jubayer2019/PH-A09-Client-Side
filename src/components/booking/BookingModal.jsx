@@ -4,6 +4,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { createBooking } from '@/services/bookingService';
 import { useTheme } from '@/context/ThemeContext';
+import { formatBDTPrice } from '@/utils/formatCurrency';
 
 export default function BookingModal({ car, onClose, onBooked }) {
   const [driverNeeded, setDriverNeeded] = useState(false);
@@ -36,7 +37,9 @@ export default function BookingModal({ car, onClose, onBooked }) {
     <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md ${theme === 'light' ? 'bg-slate-900/35' : 'bg-slate-950/70'}`}>
       <form onSubmit={handleSubmit} className={`w-full max-w-xl rounded-2xl border p-6 ${theme === 'light' ? 'border-slate-200 bg-white text-slate-900' : 'border-white/10 bg-slate-900 text-slate-100'}`}>
         <h3 className={`text-2xl font-semibold ${theme === 'light' ? 'text-slate-950' : 'text-white'}`}>Book {car.carName}</h3>
-        <p className={`mt-2 text-sm ${theme === 'light' ? 'text-slate-700' : 'text-slate-300'}`}>Base rent: ${car.dailyRentPrice}/day. Private chauffeur adds $45.</p>
+        <p className={`mt-2 text-sm ${theme === 'light' ? 'text-slate-700' : 'text-slate-300'}`}>
+          Base rent: {formatBDTPrice(car.dailyRentPrice)}/day. Private chauffeur adds {formatBDTPrice(45)}.
+        </p>
 
         <div className="mt-4 space-y-4">
           <label className={`flex items-center gap-2 ${theme === 'light' ? 'text-slate-800' : 'text-slate-200'}`}>
