@@ -5,8 +5,6 @@
   --font-display: var(--font-sora);
   --bg-main: #070d1c;
   --text-main: #e9f1ff;
-  --color-primary: #F7004F;
-  --color-primary-foreground: #ffffff;
   --bg-gradient: radial-gradient(circle at 12% 8%, #173768 0%, #070d1c 48%, #050812 100%);
 }
 
@@ -39,8 +37,6 @@
 @theme inline {
   --color-background: var(--bg-main);
   --color-foreground: var(--text-main);
-  --color-primary: var(--color-primary);
-  --color-primary-foreground: var(--color-primary-foreground);
 }
 
 * {

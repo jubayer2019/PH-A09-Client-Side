@@ -12,18 +12,21 @@ const testimonials = [
   {
     name: 'Sophie Tran',
     role: 'Product Designer, San Francisco',
+    avatarUrl: 'https://i.pravatar.cc/160?img=47',
     quote:
       'DriveFleet feels like an executive travel desk in your pocket. Booking quality cars is consistently effortless.',
   },
   {
     name: 'Marcus Ibrahim',
     role: 'Startup Founder, Austin',
+    avatarUrl: 'https://i.pravatar.cc/160?img=12',
     quote:
       'I switched from legacy rental apps to DriveFleet for reliability and clear pricing. The fleet quality is excellent.',
   },
   {
     name: 'Nadia Rahman',
     role: 'Operations Lead, Toronto',
+    avatarUrl: 'https://i.pravatar.cc/160?img=32',
     quote:
       'Our team books weekly and the dashboard saves time every single trip. It is polished and practical.',
   },
@@ -104,20 +107,41 @@ export default function HomePage() {
 
       <section className="mt-16">
         <h2 className="text-3xl font-black text-white">Customer Testimonials</h2>
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
-          {testimonials.map((item) => (
-            <motion.article
-              key={item.name}
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="rounded-2xl border border-white/10 bg-white/5 p-5"
-            >
-              <p className="text-slate-100">&ldquo;{item.quote}&rdquo;</p>
-              <p className="mt-4 font-semibold text-cyan-200">{item.name}</p>
-              <p className="text-sm text-slate-400">{item.role}</p>
-            </motion.article>
-          ))}
+        <div className="mt-8 grid gap-6 md:grid-cols-3 md:items-stretch">
+          {testimonials.map((item, index) => {
+            const featured = index === 1;
+
+            return (
+              <motion.article
+                key={item.name}
+                initial={{ opacity: 0, scale: 0.96 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className={`relative flex h-full flex-col rounded-4xl border p-6 text-center transition-all duration-300 ${
+                  featured
+                    ? 'z-10 border-cyan-300/40 bg-white/95 text-slate-900 shadow-[0_30px_80px_-35px_rgba(34,211,238,0.65)] md:-translate-y-4 md:scale-105'
+                    : 'border-white/10 bg-white/5 text-slate-200 opacity-70 shadow-[0_20px_40px_-30px_rgba(0,0,0,0.55)]'
+                }`}
+              >
+                <div className="mb-5 flex justify-center">
+                  <img
+                    src={item.avatarUrl}
+                    alt={item.name}
+                    className={`h-20 w-20 rounded-full border object-cover shadow-lg ${
+                      featured ? 'border-cyan-300/60' : 'border-white/15'
+                    }`}
+                  />
+                </div>
+                <h3 className={`text-lg font-bold ${featured ? 'text-slate-900' : 'text-white'}`}>{item.name}</h3>
+                <p className={`mt-1 text-sm font-medium ${featured ? 'text-cyan-600' : 'text-cyan-200/80'}`}>
+                  {item.role}
+                </p>
+                <p className={`mt-5 leading-7 ${featured ? 'text-slate-700' : 'text-slate-200/90'}`}>
+                  &ldquo;{item.quote}&rdquo;
+                </p>
+              </motion.article>
+            );
+          })}
         </div>
       </section>
     </MainLayout>
